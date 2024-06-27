@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "description": "a backend course of youtube-twitter by chai aur code",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "backend",
     "chai-aur-code"
   ],
   "author": "Sankhadeep Chowdhury",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
 }
