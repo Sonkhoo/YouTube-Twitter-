@@ -15,7 +15,7 @@ Project uses all standard practices like JWT, bcrypt, access tokens, refresh Tok
 ## Future Consideration 
 
 1. Adding websockets
-2. Making it into a microservice and using EDA
+2. Making it into a microservice and using EDA.
    
 ## Features
 

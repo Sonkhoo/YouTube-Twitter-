@@ -164,9 +164,21 @@ const loginUser =asyncHandler(async(req,res)=>{
 1. clear cookies
 2. Reset refresh token
 */
-const logoutUser = asyncHandler(async(req,res)=>{
-    
+const logoutUser = asyncHandler(async(req,res)=>{ 
 })
+
+const refreshAccessToken = asyncHandler(async(req,res)=>{
+})
+
+const changeCurrentPassword = asyncHandler(async(req,res)=>{
+})
+
+const getCurrentUser = asyncHandler(async(req,res)=>{
+})
+
+const updateAccountDetails = asyncHandler(async(req,res)=>{
+})
+
 export { 
     registerUser,loginUser 
 }
