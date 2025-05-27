@@ -168,6 +168,41 @@ const logoutUser = asyncHandler(async(req,res)=>{
 })
 
 const refreshAccessToken = asyncHandler(async(req,res)=>{
+ try {
+    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
+    if (!incomingRefreshToken) {
+      throw new apiError(401, "No refresh token provided");
+    }
+    const decodedToken = jwt.verify(incomingRefreshToken, process.env.SECRET_KEY);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      throw new apiError(401, "User not found");
+    }
+
+    if (user.refreshToken !== incomingRefreshToken) {
+      throw new apiError(401, "Invalid refresh token");
+    }
+
+    const { accessToken, refreshToken } = await generateAccessandRefreshToken(user._id);
+
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .json(
+        new apiResponse(200, { accessToken, refreshToken }, "Access token refreshed")
+      );
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(new apiError(500, "Error refreshing access token"));
+  }
+
 })
 
 const changeCurrentPassword = asyncHandler(async(req,res)=>{
