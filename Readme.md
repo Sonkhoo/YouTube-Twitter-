@@ -1,13 +1,22 @@
-# Chai aur Backend
+# Youtube - Twiiter Backend
 
-This is a readme file for the BACKEND PROJECT 
+This project is a complex backend project that is built with nodejs, expressjs, mongodb, mongoose, jwt, bcrypt, and many more. This project is a complete backend project that has all the features that a backend project should have. We are building a complete video hosting website similar to youtube with all the features like login, signup, upload video, like, dislike, comment, reply, subscribe, unsubscribe, and many more.
 
-# My knowledge gained:
-1. db - to connect databases
-2. controllers - logic part of the backend
-3. middlewares - to process the request in the middle before sending it to server for ex cookie-parser bcrypt etc
-4. models - data modelling 
-5. public - storing images etc
-6. routes - to route the users to differernt pages
-7. src - file for index.js app.js etc
-8. utils - for a utility that can be used again and again for ex sending mail or uploading a file.
+Project uses all standard practices like JWT, bcrypt, access tokens, refresh Tokens and many more. We have spent a lot of time in building this project and we are sure that you will learn a lot from this project.
+
+## ERD
+
+![](image.png)
+
+## Tech Stack
+- Backend - NodeJS, ExpressJS
+- DataBase - MongoDB
+
+## Future Consideration 
+
+1. Adding websockets
+2. Making it into a microservice and using EDA
+   
+## Features
+
+## API

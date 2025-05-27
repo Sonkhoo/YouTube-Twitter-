@@ -25,28 +25,6 @@ const uploadCloudinary = async (localFilePath) => {
 
             fs.unlinkSync(localFilePath)
             return uploadResult
-
-  
-            // // Optimize delivery by resizing and applying auto-format and auto-quality
-
-            // const optimizeUrl = cloudinary.url({
-            //     fetch_format: 'auto',
-            //     quality: 'auto'
-            // });
-            
-            // console.log(optimizeUrl);
-            
-            // // Transform the image: auto-crop to square aspect_ratio
-
-            // const autoCropUrl = cloudinary.url('shoes', {
-            //     crop: 'auto',
-            //     gravity: 'auto',
-            //     width: 500,
-            //     height: 500,
-            // });
-            
-            // console.log(autoCropUrl);    
-
     } catch (error) {
         fs.unlinkSync(localFilePath) //remove locally saved file if upload opp fail
         return null

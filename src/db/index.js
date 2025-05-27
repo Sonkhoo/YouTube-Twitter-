@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import { DB_NAME } from "../constants.js";
 console.log(DB_NAME);
+
 const connectDB = async ()=>{ //async method returns a promise so .then() and .catch() should be used
     try {
         const connectioninstance = await mongoose.connect(`${process.env.URL}/${DB_NAME}`,{serverSelectionTimeoutMS: 5000})
