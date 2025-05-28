@@ -5,6 +5,7 @@ import uploadCloudinary from "../utils/cloudinary.js";
 import apiResponse from "../utils/apiResponse.js";
 import fs from "fs";
 import crypto from "crypto"
+import sendEmail from "../utils/mailService.js";
 //register user logic is written here
 
 const generateAccessandRefreshToken = async(userId)=>{
@@ -35,7 +36,7 @@ const registerUser = asyncHandler(async (req, res)=>{
         7. Give success response on registeration and detailed output to the user
         */
 
-        const {username, email, fullname, avatar, coverimage, password} = req.body
+        const {username, email, fullname, password} = req.body
         //console.log(`Email:${email}`);
 
         if([fullname, email, username, password].some((fields)=>{ return fields?.trim()==""})){
@@ -50,32 +51,29 @@ const registerUser = asyncHandler(async (req, res)=>{
           });
           
         const avatarLocalPath = req.files?.avatar?.[0]?.path;
-        const coverImageLocalPath = req.files?.coverimage?.[0]?.path;
-
+        const coverImageLocalPath = req.files?.coverimage?.[0]?.path ;
+        
+        console.log(coverImageLocalPath,"hehe2")
 
         if (checkUser) {
             if (avatarLocalPath) fs.unlinkSync(avatarLocalPath);
             if (coverImageLocalPath) fs.unlinkSync(coverImageLocalPath);
             throw new apiError(409,"User with email or username already exists")
         }
-        // console.log("Req.files",req.files);
-        // console.log("Req.files.avatar",req.files.avatar);
-
         if(!avatarLocalPath){
             throw new apiError(400,"Avatar File is required")
         }
 
         const cloudinaryAvatar = await uploadCloudinary(avatarLocalPath)
-        let  cloudinaryCoverImage=""
+
+        let cloudinaryCoverImage
 
         if(coverImageLocalPath){
         cloudinaryCoverImage = await uploadCloudinary(coverImageLocalPath)
         }
 
-        console.log("Cloudinary coverImage check", cloudinaryCoverImage);
-
         if(!cloudinaryAvatar){
-            throw new apiError(400,"Avatar File is required")
+            throw new apiError(400," Avatar File is required")
         }
 
         const user =  await User.create({
@@ -235,7 +233,11 @@ const forgetPassword = asyncHandler(async(req,res)=>{
     await user.save( {validateBeforeSave: false});
 
     const resetLink = `http://localhost:3000/reset-password/${token}`;
-    console.log(`Password reset link: ${resetLink}`); // Simulate sending email
+    try {
+        await sendEmail(email,resetLink)
+    } catch (error) {
+        console.log("Email not sent", error);
+    }
 
     return res.status(200).json({
         success: true,
@@ -260,7 +262,7 @@ const updateAccountDetails = asyncHandler(async(req,res)=>{
 })
 
 export { 
-    registerUser,loginUser 
+    registerUser,loginUser, forgetPassword, refreshAccessToken
 }
 
 /*

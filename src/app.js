@@ -23,7 +23,7 @@ import router from "./routes/user.routes.js"
 
 //routes declaration 
 
-app.use("/api/users", router) //standard practice to call the user router
+app.use("/api/v1/users", router) //standard practice to call the user router
 
 // http://localhost:3001/api/v1/users/register
 

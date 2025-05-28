@@ -1,14 +1,30 @@
-/*
-to add new object req.user to the req.body using middleware which will store the user info in the body so tht user doesnt have to enter his info during logout. 
-*/
-
-import apiError from "../utils/apiError";
+import apiError from "../utils/apiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
+import jwt from "jsonwebtoken"
+import User from "../models/user.models.js";
 
-const verifyJWT = asyncHandler(async(req,res,next)=>{
+export const verifyJWT = asyncHandler(async(req, _, next) => {
     try {
-        req.cookies?.access
+        const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
+        
+        // console.log(token);
+        if (!token) {
+            throw new apiError(401, "Unauthorized request")
+        }
+    
+        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+    
+        const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
+    
+        if (!user) {
+            
+            throw new apiError(401, "Invalid Access Token")
+        }
+    
+        req.user = user;
+        next()
     } catch (error) {
-        throw new apiError(404,"Error in verifying JWT")
+        throw new ApiError(401, error?.message || "Invalid access token")
     }
+    
 })

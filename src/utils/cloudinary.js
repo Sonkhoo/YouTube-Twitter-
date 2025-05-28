@@ -5,9 +5,9 @@ const uploadCloudinary = async (localFilePath) => {
 
     // Configuration
     cloudinary.config({ 
-        cloud_name: process.env.CLOUD_NAME,
-        api_key: process.env.API_KEY , 
-        api_secret: process.env.API_SECRET // Click 'View Credentials' below to copy your API secret
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY , 
+        api_secret: process.env.CLOUDINARY_API_SECRET // Click 'View Credentials' below to copy your API secret
     });
 
     try {
@@ -26,6 +26,7 @@ const uploadCloudinary = async (localFilePath) => {
             fs.unlinkSync(localFilePath)
             return uploadResult
     } catch (error) {
+        console.log("Error inside uploadCloudinary")
         fs.unlinkSync(localFilePath) //remove locally saved file if upload opp fail
         return null
     }
