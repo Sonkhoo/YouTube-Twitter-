@@ -4,6 +4,7 @@ import User from "../models/user.models.js";
 import uploadCloudinary from "../utils/cloudinary.js";
 import apiResponse from "../utils/apiResponse.js";
 import fs from "fs";
+import crypto from "crypto"
 //register user logic is written here
 
 const generateAccessandRefreshToken = async(userId)=>{
@@ -206,7 +207,51 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
 })
 
 const changeCurrentPassword = asyncHandler(async(req,res)=>{
+    /*
+    1. get old password and new password
+    2. check if user exists or not
+    3. if user enters old password then check if password is correct or not
+    4. if password is correct then change the password
+
+    */
 })
+
+const forgetPassword = asyncHandler(async(req,res)=>{
+    /*
+    1. get email
+    2. check if user exists or not
+    3. generate token
+    4. send email with url and token
+    */
+    const {email} = req.body
+    const user = await User.findOne({email})
+    if(!user){
+        throw new apiError(400, "User does not exist")
+    }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    user.resetToken = token;
+    user.resetTokenExpiry = Date.now() + 3600000; // 1 hour
+    await user.save( {validateBeforeSave: false});
+
+    const resetLink = `http://localhost:3000/reset-password/${token}`;
+    console.log(`Password reset link: ${resetLink}`); // Simulate sending email
+
+    return res.status(200).json({
+        success: true,
+        message: "Password reset link sent to your email"
+    })
+})
+
+const resetPassword = asyncHandler(async(req,res)=>{
+    /*
+    1. get token and new password
+    2. check if user exists or not
+    3. check if token is valid or not
+    4. change the password
+    */
+})
+
 
 const getCurrentUser = asyncHandler(async(req,res)=>{
 })

@@ -45,6 +45,12 @@ const userSchema = new Schema({
     },
     refreshToken:{
         type: String
+    },
+    resetToken:{
+        type: String
+    },
+    resetTokenExpiry:{
+        type: Date
     }
 },{timestamps: true})
 
